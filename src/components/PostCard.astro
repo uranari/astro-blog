@@ -1,0 +1,28 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+const { post } = Astro.props;
+const { data, slug } = post;
+const href = data.legacyUrl ?? `/posts/${slug}/`;
+---
+
+<li class="post-list__item">
+  <h2 class="post-list__title">
+    <a href={href}>{data.title}</a>
+  </h2>
+  <div class="post-list__meta">
+    <FormattedDate date={data.pubDate} />
+    {data.tags.length > 0 && (
+      <ul class="tag-list">
+        {data.tags.map((tag) => (
+          <li><a class="tag" href={`/tags/${tag}/`}>{tag}</a></li>
+        ))}
+      </ul>
+    )}
+  </div>
+  <p class="post-list__desc">{data.description}</p>
+</li>

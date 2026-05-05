@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const recent = posts.slice(0, 10);
+---
+
+<BaseLayout>
+  <ul class="post-list">
+    {recent.map((post) => <PostCard post={post} />)}
+  </ul>
+  {posts.length > 10 && (
+    <p style="margin-top: var(--space-lg); text-align: right;">
+      <a href="/posts/">→ 全ての記事</a>
+    </p>
+  )}
+</BaseLayout>

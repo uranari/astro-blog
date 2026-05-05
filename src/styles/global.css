@@ -1,0 +1,368 @@
+/* =========================================
+   Design tokens
+   ========================================= */
+:root {
+  /* Color: 暖かいオフホワイト x 深いインク x 単色のアクセント */
+  --color-bg: #faf7f2;
+  --color-bg-elev: #f3eee5;
+  --color-text: #1a1814;
+  --color-text-muted: #5a564d;
+  --color-rule: #d9d2c2;
+  --color-accent: #8b1e1e; /* 深い赤茶 */
+  --color-link: #8b1e1e;
+  --color-code-bg: #ebe5d6;
+
+  /* Typography */
+  --font-display: 'Fraunces', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-body: 'Fraunces', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-sans: 'Inter', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+
+  /* Layout */
+  --measure: 68ch;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #14130f;
+    --color-bg-elev: #1d1c17;
+    --color-text: #ece8de;
+    --color-text-muted: #8e887a;
+    --color-rule: #34322c;
+    --color-accent: #d97757;
+    --color-link: #d97757;
+    --color-code-bg: #1d1c17;
+  }
+}
+
+/* Shikiのデュアルテーマ切り替え */
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+/* =========================================
+   Reset / base
+   ========================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-feature-settings: 'kern', 'liga', 'palt';
+  line-height: 1.7;
+  font-variation-settings: 'opsz' 14, 'SOFT' 30;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* =========================================
+   Layout
+   ========================================= */
+.container {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.site-header {
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: var(--space-md);
+}
+
+.site-header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.site-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  font-variation-settings: 'opsz' 144, 'SOFT' 0;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.site-nav {
+  display: flex;
+  gap: var(--space-md);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+.site-nav a {
+  color: var(--color-text-muted);
+}
+.site-nav a:hover {
+  color: var(--color-accent);
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-rule);
+  margin-top: var(--space-xl);
+  padding-block: var(--space-lg);
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+}
+
+main {
+  padding-block: var(--space-lg);
+}
+
+/* =========================================
+   Prose (Markdownレンダリング部)
+   ========================================= */
+.prose {
+  font-size: 1.02rem;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 0;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+.prose h1 { font-size: 2.2rem; }
+.prose h2 {
+  font-size: 1.55rem;
+  border-bottom: 1px solid var(--color-rule);
+  padding-bottom: 0.3em;
+}
+.prose h3 { font-size: 1.25rem; }
+.prose p { margin-block: var(--space-sm); }
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-rule);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.prose a:hover {
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose blockquote {
+  margin: var(--space-md) 0;
+  padding: 0.4em 1em;
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  margin-block: var(--space-lg);
+}
+
+/* インラインコード */
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+
+/* コードブロック */
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  padding: var(--space-md);
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--color-rule);
+}
+
+/* テーブル */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  margin-block: var(--space-md);
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.5em 0.7em;
+  border-bottom: 1px solid var(--color-rule);
+}
+.prose th {
+  font-weight: 600;
+  background: var(--color-bg-elev);
+}
+
+/* KaTeX調整 */
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.5em;
+}
+
+/* =========================================
+   List of posts
+   ========================================= */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.post-list__item {
+  padding-block: var(--space-md);
+  border-bottom: 1px solid var(--color-rule);
+}
+.post-list__item:last-child {
+  border-bottom: none;
+}
+.post-list__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.2em;
+}
+.post-list__title a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.post-list__title a:hover {
+  color: var(--color-accent);
+}
+.post-list__meta {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.post-list__desc {
+  margin: 0.4em 0 0;
+  color: var(--color-text-muted);
+}
+
+/* =========================================
+   Tags
+   ========================================= */
+.tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2em 0.55em;
+  border: 1px solid var(--color-rule);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+.tag:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* =========================================
+   Article header
+   ========================================= */
+.post-header {
+  margin-bottom: var(--space-lg);
+}
+.post-header__category {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.4em;
+}
+.post-header__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 144, 'SOFT' 0;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 var(--space-sm);
+}
+.post-header__meta {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.post-header__hero {
+  margin-block: var(--space-md);
+  border-radius: 4px;
+  overflow: hidden;
+}

@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+const sorted = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="Tags" description="タグ一覧">
+  <h1 style="font-family: var(--font-display); font-weight: 600; margin-bottom: var(--space-md);">
+    Tags
+  </h1>
+  <ul class="tag-list">
+    {sorted.map(([tag, count]) => (
+      <li><a class="tag" href={`/tags/${tag}/`}>{tag} ({count})</a></li>
+    ))}
+  </ul>
+</BaseLayout>
