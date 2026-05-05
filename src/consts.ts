@@ -2,7 +2,7 @@
 export const SITE = {
   title: 'uranari',
   description: '旅と写真とtech',
-  url: 'https://uranari.com/',
+  url: 'https://blog.uranari.com/',
   author: 'uranari',
   lang: 'ja',
   locale: 'ja-JP',
